@@ -1,0 +1,52 @@
+=**= 2.6 Освобождение ресурсов =**= 
+"""
+@pytest.fixture(scope="function")
+def driver():
+    # создание объекта WebDriver
+    driver = webdriver.Chrome()
+    yeld driver
+    # освобождение ресурсов
+    browser.quit()    
+"""
+
+
+
+=**= ﻿3.3 Локаторы =**=
+
+# 3.3 Список основных локаторов
+"""
+- ID,
+- NAME,
+- LINK_TEXT,
+- PARTIAL_LINK_TEXT,
+- TAG_NAME,
+- CLASS_NAME,
+- CSS_SELECTOR,
+- XPATH.
+"""
+
+<button id="btnID"
+        name="getUsers"
+	class="btn-info">
+    Кнопка
+</button>
+
+d = webdriver. Chrome ()
+btn = d.find_element (By.ID, 'btnID')  # поиск по id (стабильный вариант)
+btn = d.find_element (By.NAME, 'getUsers')  #()
+btn = d.find_element (By.CLASS_NAME, 'btn-info')  # поиск по названию класса
+btn = d.find_element (By.TAG_NAME, 'button')  # поиск по названию html-тега
+btns = d.find_elements (By.TAG_NAME, 'button')  # поиск списка элементов
+
+-------------------------------------------------
+﻿
+<div>
+	<a href="...">apple</a>
+	<a href="...">banana, orange, eggplant</a> 
+</div>
+
+d = webdriver.Chrome ()
+link = d.find_element (By.LINK_TEXT, 'apple')  # поиск гиперссылок
+links = d.find_element (By.PARTIAL_LINK_TEXT, eggplant')  # поиск по частичному совпадению текста гиперссылок
+
+
