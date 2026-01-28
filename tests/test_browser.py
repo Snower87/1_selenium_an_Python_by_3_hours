@@ -10,9 +10,17 @@ from config.settings import DRIVER_PATH, BASE_DIR
 def root_url():
     return f'{BASE_DIR / "store-template_website" / "index.html"}'
 
-def test_browser_are_correct(root_url):
-    service = Service(executable_path=DRIVER_PATH)
-    browser = webdriver.Chrome(service=service)
+@pytest.fixture(scope="function")
+def browser():
+    # создание объекта WebDriver
+    driver = webdriver.Chrome()
+    yield driver
+    # освобождение ресурсов
+    driver.quit()
+
+def test_browser_are_correct(browser, root_url):
+    #service = Service(executable_path=DRIVER_PATH) # можно убрать
+    #browser = webdriver.Chrome(service=service)
     browser.maximize_window()
 
     time.sleep(2)
@@ -33,7 +41,17 @@ def test_browser_are_correct(root_url):
     product_title = browser.find_element(By.CLASS_NAME, 'my-4')
     assert product_title.text == 'Store'
 
+    # освобождение ресурсов
     browser.quit()
 
 
-
+# 2.6 Освобождение ресурсов
+"""
+@pytest.fixture(scope="function")
+def driver():
+    # создание объекта WebDriver
+    driver = webdriver.Chrome()
+    yeld driver
+    # освобождение ресурсов
+    browser.quit()    
+"""
