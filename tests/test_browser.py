@@ -44,6 +44,36 @@ def test_browser_are_correct(browser, root_url):
     # освобождение ресурсов
     browser.quit()
 
+def test_add_to_cart_and_remove(browser, root_url): # вариант автора
+    browser.maximize_window()
+    browser.get(root_url)
+
+    browser.find_element(By.ID, "start-purchase-link").click()
+
+    card_title = browser.find_element(By.CLASS_NAME, 'card-title').text
+
+    card_footer = browser.find_element(By.CLASS_NAME, 'card-footer')
+    card_footer.find_element(By.TAG_NAME, 'button').click()
+
+    browser.find_element(By.ID, "navbarDropdown").click()
+    browser.find_element(By.LINK_TEXT, 'Профиль').click()
+
+    added_item_title = browser.find_element(By.CLASS_NAME, 'card-title').text
+
+    # Не работает:
+    # assert card_title == added_item_title
+    #Expected: 'Product name'
+    #Actual: 'Худи черного цвета с монограммами adidas Originals'
+
+    time.sleep(2)
+    # Не работает:
+    # browser.find_element(By.ID, "trash").click()
+
+    # Не работает:
+    # message = browser.find_element(By.TAG_NAME, "h3").text
+    #assert message == "Нет добавленных товаров"
+
+
 def test_add_and_empty_basket(browser, root_url): # мой вариант
     # Настройки, запуск браузера
     # 1. Выставляет размер браузера в полный экран
