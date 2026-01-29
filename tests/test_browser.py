@@ -134,3 +134,23 @@ def test_add_and_empty_basket(browser, root_url): # мой вариант
     #assert message == "Нет добавленных товаров"
     time.sleep(2)
 
+# 3.6 Использование CSS_SELECTOR
+def test_find_by_css_selectors(browser, root_url):
+    browser.maximize_window()
+    browser.get(root_url)
+
+    # 1. Переходим в каталог по нажатию на кнопку "Начать"
+    time.sleep(2)
+    browser.find_element(By.ID, "start-purchase-btn").click()
+
+    # 2. Ищем селектор переходна на номер страницы
+    time.sleep(2)
+    el1 = browser.find_element(By.CSS_SELECTOR, 'a[aria-disabled="true"]')
+    el2 = browser.find_element(By.CSS_SELECTOR, '#navbarDropdown')
+
+    # 3. Помещаем все элементы в список
+    el_list = [el1, el2]
+    #    и проверяем, что все они есть (существуют)
+    assert all(el is not None for el in el_list)
+
+
