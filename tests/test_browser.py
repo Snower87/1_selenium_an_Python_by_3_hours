@@ -143,7 +143,7 @@ def test_find_by_css_selectors(browser, root_url):
     time.sleep(2)
     browser.find_element(By.ID, "start-purchase-btn").click()
 
-    # 2. Ищем селектор переходна на номер страницы
+    # 2. Ищем селектор переходна на номер страницы и на тоггл
     time.sleep(2)
     el1 = browser.find_element(By.CSS_SELECTOR, 'a[aria-disabled="true"]')
     el2 = browser.find_element(By.CSS_SELECTOR, '#navbarDropdown')
@@ -153,4 +153,23 @@ def test_find_by_css_selectors(browser, root_url):
     #    и проверяем, что все они есть (существуют)
     assert all(el is not None for el in el_list)
 
+# 3.7 Использование XPATH
+def test_find_by_xpath_selectors(browser, root_url):
+    browser.maximize_window()
+    browser.get(root_url)
 
+    # 1. Переходим в каталог по нажатию на кнопку "Начать"
+    time.sleep(2)
+    browser.find_element(By.ID, "start-purchase-btn").click()
+
+    time.sleep(2)
+    # 2. Ищем кнопку "Отправить в корзину" и порверяем текс в нем
+    el1 = browser.find_element(By.XPATH, '/html/body/div/div/div[2]/div[2]/div[1]/div/div[2]/button')
+
+    # Профиль в выпадающем меню
+    browser.find_element(By.CSS_SELECTOR, '#navbarDropdown').click()
+    el2 = browser.find_element(By.XPATH, '//*[@id="navbarResponsive"]/ul/li[3]/ul/li[1]/a')
+
+    # 3. Проверяем текст локаторов
+    assert el1.text == "Отправить в корзину"
+    assert el2.text == "Профиль"

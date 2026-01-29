@@ -92,8 +92,38 @@ links = d.find_element (By.PARTIAL_LINK_TEXT, eggplant')  # поиск по ча
 ﻿
 Примеры:
 d = webdriver.Chrome()
-d.find_element (By.CSS_SELECTOR, '.example-class')    ---> По классу
-d.find_element (By.CSS_SELECTOR, '#example-id')       ---> По идентификатору
+d.find_element(By.CSS_SELECTOR, '.example-class')    ---> По классу
+d.find_element(By.CSS_SELECTOR, '#example-id')       ---> По идентификатору
 d.find_element(By.CSS_SELECTOR, 'input[type="text"]') ---> По атрибуту
 d.find_element(By.CSS_SELECTOR, 'div > p')            ---> Дочерний элемент
 
+
+=**= 3.7 XPATH =**=
+ 
+﻿﻿Особенности:
+- Гибкий и точный локатор для выбора элементов на веб-странице
+- Низкий приоритет по сравнению с другими локаторами
+- Рекомендуется использовать в определенных случаях
+
+??? Когда использовать?
+• Другие локаторы не обеспечивают точность или не подходят
+• Сложный поиск элементов (текстовое содержимое, положение в DOM-дереве, отношения между элементами)
+• Работа с ХМL-документами или веб-страницами с преимущественно XML-структурой
+﻿
+Примеры
+d = webdriver.Chrome()
+d.find_element(By.XPATH, '//input[@type="text"]')		---> По атрибуту
+d.find_element(By.ХРАТН, '//div[contains(text(), "Пример")]')	---> По текстовому содержимому
+d.find_element(By.XPATH, '//div/p')				---> Дочерний элемент
+d.find_element(By.XPATH, '//div[@id="example-id"]/following-sibling::div') ---> Элемент относительно другого элемента
+﻿
+XPATH
+Плюсы и минусы
++ Гибкость
++ Работа с ХML-структурой
++ Поддержка осей, функций и условных выражений
++ Выборка нескольких элементов
+
+- Зависимость от структуры DOM
+- Сложный и длинный синтаксис
+- Производительность
