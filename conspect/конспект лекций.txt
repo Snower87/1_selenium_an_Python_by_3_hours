@@ -127,3 +127,54 @@ XPATH
 - Зависимость от структуры DOM
 - Сложный и длинный синтаксис
 - Производительность
+
+=**= 3.8 Взаимодействие с input-элементами =**= 
+﻿
+Input Elements
+• ТЕХТ. используются для ввода текстовой информации, такой как имя пользователя или почтовый адрес
+• PASSWORD. аналогичны текстовым полям, но скрывают введенные символы для обеспечения безопасности
+• CHECKBOX. позволяют пользователю выбрать одну или несколько опций из предложенного списка
+• RADIO. аналогичны чекбоксам, но предоставляют возможность выбора только одной опции из списка
+• SELECT. позволяют выбрать одну опцию из списка, обычно представленного в виде раскрывающегося меню
+
+﻿Пример <input>:
+<input type="text" id="firstName">
+
+d = webdriver.chrome ()
+first_name = d.find_element (By.ID, 'firstName')  ---> Поиск по ID
+first_name.send_keys('Вася')		---> Ввод текста
+first_name.send_keys (Keys.ENTER)	---> Ввод специальных символов
+first_name.clear()			---> Очистить поле
+
+﻿﻿Пример <select>:
+<select_id="city">
+  <option value="s1">Москва</option>
+  <option value="s2">Санкт-Петербург</option> 
+  <option value="s3">Краснодар</option>
+</select>
+
+d = webdriver.Chrome ()
+el = d.find_element(By.ID, 'city')	---> Поиск по ID
+x = Select(el)				---> Создание объекта селектора
+x.select_by_visible_text('Москва')	---> Выбрать элемент по тексту
+x.select_by_index(0)			---> Выбрать элемент по индексу
+
+﻿﻿Пример <checkbox>:﻿
+<input type="checkbox" id="rememberData">
+d = webdriver.Chrome ()
+el d.find_element (By. ID, 'rememberData')	---> Поиск по ID
+el.click()					---> Выбрать кликом
+
+﻿﻿﻿Пример <radiobutton>:﻿
+<input type="radio" id="Yes"> 
+<input type="radio" id="No">
+d = webdriver. Chrome ()
+r1 = d.find_element (By.ID, 'Yes') ---> Поиск по ID
+R2 = d.find_element (By.ID, 'No')
+
+r1.click() r2.click()	--->  Выбран элемент1 / не выбран элемент2
+
+﻿Еще примеры методов <radiobutton>:﻿
+r1.is_selected()	---> Вернет True, если элемент выбран
+r1.is_enabled ()	---> Вернет True, если элемент включен
+r1.is_displayed()	---> Вернет True, если элемент отображен

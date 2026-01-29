@@ -173,3 +173,47 @@ def test_find_by_xpath_selectors(browser, root_url):
     # 3. Проверяем текст локаторов
     assert el1.text == "Отправить в корзину"
     assert el2.text == "Профиль"
+
+# 3.8 Взаимодействие с input-элементами
+def test_practice_by_input_elements(browser, root_url):
+    browser.maximize_window()
+    browser.get(root_url)
+
+    # 1. Переходим в каталог по нажатию на кнопку "Начать"
+    time.sleep(2)
+    browser.find_element(By.ID, "start-purchase-btn").click()
+
+    # 2. Вызываем тоггл, переходим в профиль
+    time.sleep(2)
+    browser.find_element(By.ID, "navbarDropdown").click()
+    browser.find_element(By.LINK_TEXT, "Профиль").click()
+
+    # 3. Нажимаем кнопку "Оформить заказ"
+    time.sleep(2)
+    browser.find_element(By.LINK_TEXT, "Оформить заказ").click()
+
+    # 4. Записываем и проверяем данные в input-ах
+    time.sleep(2)
+    firstname = browser.find_element(By.ID, "firstName")
+    lastname = browser.find_element(By.ID, "lastName")
+
+    firstname.send_keys("Сережа")
+    time.sleep(2)
+    lastname.send_keys("БББ")
+    time.sleep(1)
+
+    assert firstname.get_attribute('value') == "Сережа"
+    assert lastname.get_attribute('value') == "БББ"
+
+    """"
+    # remember_data - нету на странице такого элемента
+    remember_data = browser.find_element(By.ID, "rememberData")
+    remember_data.click()
+
+    # проверяем, что чек-бокс нажат
+    assert remember_data.is_selected()
+
+    # проверяем, что чек-бокс снят
+    remember_data.click()
+    assert remember_data.is_selected() is False
+    """
