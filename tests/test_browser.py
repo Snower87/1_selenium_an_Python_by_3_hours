@@ -225,3 +225,42 @@ def test_practice_by_input_elements(browser, root_url):
     """
 
 # 3.9 Работа с динамическими веб-страницами
+
+# 4.1 Взаимодействие с вкладками и окнами
+def _switch_to_another_handler(browser, original_page_handler):
+    for window_handle in browser.window_handles:
+        if window_handle != original_page_handler:
+            browser.switch_to.window(window_handle)
+            break
+
+# Этот тест - не рабочий
+def test_interaction_with_tabs_or_windows(browser, root_url):
+    browser.maximize_window()
+    browser.get(root_url)
+
+    original_page_handler = browser.current_window_handle
+
+    login_page_link = browser.find_element(By.LINK_TEXT, 'Войти')
+    login_page_link.click()
+
+    _switch_to_another_handler(browser, original_page_handler)
+
+    login_title = browser.find_element(By.TAG_NAME, 'title').text
+    assert login_title == 'Store - Авторизация'
+
+    browser.close()
+    browser.switch_to.window(original_page_handler)
+
+    catalog_page = browser.find_element(By.LINK_TEXT, 'Каталог')
+    catalog_page.click()
+
+    _switch_to_another_handler(browser, original_page_handler)
+
+    catalog_title = browser.find_element(By.TAG_NAME, 'title').text
+    assert catalog_title == 'Store - Каталог'
+
+    browser.close()
+    browser.switch_to.window(original_page_handler)
+
+    main_title = browser.find_element(By.TAG_NAME, 'title').text
+    assert main_title == 'Store'
