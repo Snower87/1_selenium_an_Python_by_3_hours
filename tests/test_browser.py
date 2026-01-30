@@ -3,6 +3,8 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 from config.settings import DRIVER_PATH, BASE_DIR
 
@@ -55,8 +57,10 @@ def test_add_to_cart_and_remove(browser, root_url): # вариант автор�
     card_footer = browser.find_element(By.CLASS_NAME, 'card-footer')
     card_footer.find_element(By.TAG_NAME, 'button').click()
 
-    browser.find_element(By.ID, "navbarDropdown").click()
-    browser.find_element(By.LINK_TEXT, 'Профиль').click()
+    # browser.find_element(By.ID, "navbarDropdown").click()
+    WebDriverWait(browser, timeout=5).until(EC.visibility_of_element_located((By.ID, "navbarDropdown"))).click()
+    # browser.find_element(By.LINK_TEXT, 'Профиль').click()
+    WebDriverWait(browser, timeout=5).until(EC.visibility_of_element_located((By.LINK_TEXT, 'Профиль'))).click()
 
     added_item_title = browser.find_element(By.CLASS_NAME, 'card-title').text
 
@@ -65,7 +69,9 @@ def test_add_to_cart_and_remove(browser, root_url): # вариант автор�
     #Expected: 'Product name'
     #Actual: 'Худи черного цвета с монограммами adidas Originals'
 
-    time.sleep(2)
+    time.sleep(2) # можно поменять на (см.ниже)
+    #WebDriverWait(browser, timeout=5).until(EC.visibility_of_element_located(By.XPATH, '//*[@id="trash"]/i'))
+
     # Не работает:
     # browser.find_element(By.ID, "trash").click()
 
@@ -217,3 +223,5 @@ def test_practice_by_input_elements(browser, root_url):
     remember_data.click()
     assert remember_data.is_selected() is False
     """
+
+# 3.9 Работа с динамическими веб-страницами
