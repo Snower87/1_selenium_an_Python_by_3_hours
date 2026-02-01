@@ -269,7 +269,7 @@ d.set_window_position(100, 200) ---> Установить координаты �
 d.save_screenshot('./image')  	---> Сделать снимок экрана
 
 
-
+=**= 4.3 Headless Mode в Selenium WebDriver =**=
 
 
 

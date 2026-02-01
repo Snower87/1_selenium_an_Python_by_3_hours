@@ -264,3 +264,33 @@ def test_interaction_with_tabs_or_windows(browser, root_url):
 
     main_title = browser.find_element(By.TAG_NAME, 'title').text
     assert main_title == 'Store'
+
+# 4.3 Headless Mode в Selenium WebDriver
+@pytest.fixture()
+def headless_chrome():
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless=new')
+
+    browser = webdriver.Chrome(options=options)
+    yield browser
+
+    browser.quit()
+
+# Перепись теста 3.6 в режиме headless (браузер без графического интерфейса)
+def test_find_by_css_selectors_with_headless(headless_chrome, root_url):
+    headless_chrome.maximize_window()
+    headless_chrome.get(root_url)
+
+    # 1. Переходим в каталог по нажатию на кнопку "Начать"
+    time.sleep(2)
+    headless_chrome.find_element(By.ID, "start-purchase-btn").click()
+
+    # 2. Ищем селектор переходна на номер страницы и на тоггл
+    time.sleep(2)
+    el1 = headless_chrome.find_element(By.CSS_SELECTOR, 'a[aria-disabled="true"]')
+    el2 = headless_chrome.find_element(By.CSS_SELECTOR, '#navbarDropdown')
+
+    # 3. Помещаем все элементы в список
+    el_list = [el1, el2]
+    #    и проверяем, что все они есть (существуют)
+    assert all(el is not None for el in el_list)
