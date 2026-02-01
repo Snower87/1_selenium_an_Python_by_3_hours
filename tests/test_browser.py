@@ -12,13 +12,15 @@ from config.settings import DRIVER_PATH, BASE_DIR
 def root_url():
     return f'{BASE_DIR / "store-template_website" / "index.html"}'
 
-@pytest.fixture(scope="function")
-def browser():
-    # создание объекта WebDriver
-    driver = webdriver.Chrome()
-    yield driver
-    # освобождение ресурсов
-    driver.quit()
+# данные о браузере и параметрах его запуска хранятся в настройках конфига: conftest.py
+
+# @pytest.fixture(scope="function")
+# def browser():
+#     # создание объекта WebDriver
+#     driver = webdriver.Chrome()
+#     yield driver
+#     # освобождение ресурсов
+#     driver.quit()
 
 def test_browser_are_correct(browser, root_url):
     #service = Service(executable_path=DRIVER_PATH) # можно убрать
