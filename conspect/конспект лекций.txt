@@ -323,3 +323,11 @@ d.prettify () 	 --->
 
 
 Установка: pip install beatifulsoup4
+
+
+6. PageObject & Refactoring﻿
+
+== Обзор модуля "Применение Page Object Design Pattern" ==
+• Page Object Design Pattern
+• Классы для страниц и Локаторы
+• Рефакторинг тестов
