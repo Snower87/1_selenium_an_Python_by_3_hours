@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from bs4 import BeautifulSoup
 
 from config.settings import DRIVER_PATH, BASE_DIR
 
@@ -296,3 +297,27 @@ def test_find_by_css_selectors_with_headless(headless_chrome, root_url):
     el_list = [el1, el2]
     #    и проверяем, что все они есть (существуют)
     assert all(el is not None for el in el_list)
+
+#5.3 BeautifulSoup API
+def test_beautifulsoup(browser, root_url):
+    browser.get(root_url)
+    browser.maximize_window()
+    browser.find_element(By.ID, "start-purchase-btn").click()
+
+    # 1. Для веб-скрапинга создаем объект BeautifulSoup
+    bs  = BeautifulSoup(browser.page_source, 'html.parser')
+    # поиск тегов 'div' с атрибутом 'class': 'card-body'
+    rows = bs.find_all('div', attrs={'class': 'card-body'})
+    # поиск по id
+    # rows = bs.find_all('div', id=...)
+    products = []
+
+    # итерируемся по строкам
+    for row in rows:
+        title = row.find('h4').text
+        products.append(title)
+
+    print(products)
+    # записываем в файл данные
+    with open('products.txt', 'w', encoding='utf-8') as file:
+        file.write('\n'.join(products))

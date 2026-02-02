@@ -288,6 +288,7 @@ Headless Mode - режим тестирования/запуска АТ без
 • Взаимодействие и применение BeautifulSoup и Selenium WebDriver
 • BeautifulSoup API
 
+
 =**=  5.2 BeautifulSoup & WebDriver. Взаимодействие и применение =**= 
 ﻿
 Взаимодействие и применение
@@ -302,3 +303,23 @@ Headless Mode - режим тестирования/запуска АТ без
 2. Создание агрегаторов информации
 3. Анализ конкурентов
 
+
+=**= 5.3 BeautifulSoup API =**= 
+
+﻿
+<div>
+   <p>Hello</p>
+   <p>World!</p>
+</div>
+
+BeautifulSoup API. Пример
+
+soup = BeautifulSoup (html_content, "html.parser") ---> Создание объекта
+
+soup.get_text()	 ---> Вывод: Hello World! # получение всего текста страницы
+d.find("p") 	 ---> Bывод: <p>Hello</p> # получение тега со значением
+d.find_all("p")	 ---> Вывод: [<p>Hello</p>, <p>World!</p>] # получение всех тегов со значением
+d.prettify () 	 --->
+
+
+Установка: pip install beatifulsoup4
