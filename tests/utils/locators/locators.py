@@ -8,6 +8,8 @@ class BasePageLocators:
 
 class MainPageLocators (BasePageLocators):
     START_PURCHASE = (By.ID, 'start-purchase-link')
+    TITLE_STORE_HEADER = (By.CLASS_NAME, 'navbar-brand')
+    TITLE_STORE_MAIN = (By.CLASS_NAME, 'mt-5')
 
 class CatalogPageLocators (BasePageLocators):
     CARD_TITLE =  (By.CLASS_NAME, 'card-title')
