@@ -9,9 +9,10 @@ from bs4 import BeautifulSoup
 
 from config.settings import DRIVER_PATH, BASE_DIR
 
-@pytest.fixture()
-def root_url():
-    return f'{BASE_DIR / "store-template_website" / "index.html"}'
+# ---> перенесено в файл conftest.py
+#@pytest.fixture()
+#def root_url():
+#    return f'{BASE_DIR / "store-template_website" / "index.html"}'
 
 # данные о браузере и параметрах его запуска хранятся в настройках конфига: conftest.py
 

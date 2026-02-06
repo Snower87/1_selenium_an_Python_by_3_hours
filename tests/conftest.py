@@ -6,6 +6,10 @@ from selenium import webdriver
 
 from config.settings import BASE_DIR
 
+@pytest.fixture()
+def root_url():
+    return f'{BASE_DIR / "store-template_website" / "index.html"}'
+
 def get_config_file_path():
     return BASE_DIR / 'config' / 'test_config.json'
 
@@ -16,8 +20,9 @@ def config(scope='session'):
     return config
 
 def set_options(opts, config):
-    if config['mode'] == 'Headless':
-        opts.add_argument('--headless= new')
+    if 'mode' in config:
+        if config['mode'] == 'Headless':
+            opts.add_argument('--headless= new')
 
 @pytest.fixture()
 def browser(config):
