@@ -2,12 +2,16 @@ from selenium.webdriver.common.by import By
 
 from config.settings import ROOT_URL
 from pages.base_page import BasePage
+from pathlib import Path
+
 from utils.locators.locators import CatalogPageLocators, BasePageLocators
 
 class CatalogPage(BasePage):
     def __init__(self, driver, base_url=ROOT_URL):
         super(CatalogPage, self).__init__(driver, base_url=base_url)
-        self.base_url = f'{base_url}/products.html'
+        #self.base_url = f'{base_url}/products.html'
+        path = Path(base_url) / 'products.html'
+        self.base_url = path.as_uri()  # например, 'file:///C:/.../products.html'
 
     def check_open_page(self):
         actual_url = self.driver.current_url

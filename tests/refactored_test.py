@@ -117,3 +117,25 @@ def test_2_check_open_urllink_catalogPage(browser, root_url):
     assert text_profile == 'Админ-панель'
     text_profile = main_page.find_element(MenuLocators.EXIT_ACTION).text
     assert text_profile == 'Выйти'
+
+# (07.02.2026, #10m)
+def test_3_chek_following_the_link_catalog(browser, root_url):
+    # 1 Открытие главной страницы (/index.html) и настройка браузера
+    main_page = MainPage(browser)
+    catalog_page = CatalogPage(browser)
+    main_page.navigate_to()
+    browser.maximize_window()
+
+    # 2 Проверка перехода на страницу каталога после нажатия на кнопку 'Начать покупки'
+    main_page.click_on(MainPageLocators.START_PURCHASE)
+    sleep(2)
+    catalog_page.check_open_page()
+
+    # 3 Имитируем нажатие кнопки <back> (возврат на предыдущую страницу)
+    browser.back()
+
+    # 4 Переходим по ссылке вверху справа и проверяем адрес открытой страницы (url-страницы)
+    sleep(2)
+    main_page.click_on(MainPageLocators.CATALOG_HEADER)
+    sleep(2)
+    catalog_page.check_open_page()
