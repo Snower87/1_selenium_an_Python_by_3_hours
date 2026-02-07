@@ -1,12 +1,13 @@
 from time import sleep
 
 import pytest
+from selenium.webdriver.common.by import By
 
 from config.settings import BASE_DIR
 from pages.catalog_page import CatalogPage
 from pages.profile_page import ProfilePage
 from tests.pages.main_page import MainPage
-from utils.locators.locators import MainPageLocators
+from utils.locators.locators import MainPageLocators, BasePageLocators, MenuLocators
 
 
 # ---> перенесено в файл conftest.py
@@ -54,6 +55,7 @@ def test_add_to_cart_and_remove(browser, root_url): # вариант автор�
     #profile_page.remove_item_from_cart() ---> не работает, тк нету локатора с корзиной
     #assert profile_page.get_message_of_empty_cart() == 'Нет добавленных товаров'  ---> не работает, тк нету локатора с корзиной
 
+# (07.02.2026, #1h)
 def test_1_all_about_mainpage(browser, root_url):
     main_page = MainPage(browser)
     catalog_page = CatalogPage(browser)
@@ -81,3 +83,37 @@ def test_1_all_about_mainpage(browser, root_url):
     #main_page.go_to_catalog_page()                      # ---> #2 переход на другую страницу: через метод
 
     sleep(5)
+
+# (07.02.2026, #1.5h)
+def test_2_check_open_urllink_catalogPage(browser, root_url):
+    # 1 Создаем объект main_page, настраиваем браузер
+    main_page = MainPage(browser)
+    browser.maximize_window()
+    # 2 Переходим на url main_page
+    main_page.navigate_to()
+    # 3 Проверяем, что открыта страница 'index.html'
+    main_page.check_open_page()
+    # 4 Проверяем, что в главной странице есть текстовая ссылка 'Каталог' вверху
+    # Вариант №1 (поиск):
+    #main_page.check_text_catalog()
+    # Вариант №2 (поиск):
+    text_catalog = main_page.find_element(MainPageLocators.CATALOG_HEADER).text
+    assert text_catalog == 'Каталог'
+    # 5 Проверяем, что в главной странице есть текстовая ссылка 'Войти' вверху
+    # Вариант №1
+    main_page.check_text_login()
+    # Вариант №2
+    #text_login = main_page.find_element(MainPageLocators.LOGIN_PAGE).text
+    #assert  text_login == 'Войти'
+    # 6 Кликаем на dropdown, чтобы появился выпадающий список
+    main_page.find_element(BasePageLocators.NAVBAR).click()
+    # 7 Проверяем все текстовые пункты меню
+
+    text_profile = main_page.find_element(MenuLocators.PROFILE_PAGE).text
+    assert text_profile == 'Профиль'
+    text_profile = main_page.find_element(MenuLocators.ORDER_PAGE).text
+    assert text_profile == 'Заказы'
+    text_profile = main_page.find_element(MenuLocators.ADMIN_PANEL).text
+    assert text_profile == 'Админ-панель'
+    text_profile = main_page.find_element(MenuLocators.EXIT_ACTION).text
+    assert text_profile == 'Выйти'

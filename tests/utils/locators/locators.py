@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 
 class BasePageLocators:
     # Константы — обычно пишутся в верхнем регистре
-    LOGIN_PAGE= (By.LINK_TEXT, 'Boйти')
+    LOGIN_PAGE= (By.LINK_TEXT, 'Boйти ')
     NAVBAR = (By.ID, 'navbarDropdown')
     PROFILE_PAGE= (By.LINK_TEXT, 'Профиль')
 
@@ -10,6 +10,14 @@ class MainPageLocators (BasePageLocators):
     START_PURCHASE = (By.ID, 'start-purchase-link')
     TITLE_STORE_HEADER = (By.CLASS_NAME, 'navbar-brand')
     TITLE_STORE_MAIN = (By.CLASS_NAME, 'mt-5')
+    CATALOG_HEADER = (By.PARTIAL_LINK_TEXT, 'Каталог')
+    LOGIN_PAGE = (By.XPATH, "//a[@href='users/login.html']")
+
+class MenuLocators (BasePageLocators):
+    PROFILE_PAGE = (By.XPATH, "//a[contains(text(),'Профиль')]")
+    ORDER_PAGE = (By.XPATH, "//a[contains(text(),'Заказы')]")
+    ADMIN_PANEL = (By.XPATH, "//a[contains(text(),'Админ-панель')]")
+    EXIT_ACTION = (By.XPATH, "//a[contains(text(),'Выйти')]")
 
 class CatalogPageLocators (BasePageLocators):
     CARD_TITLE =  (By.CLASS_NAME, 'card-title')

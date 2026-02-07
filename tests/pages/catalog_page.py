@@ -9,6 +9,10 @@ class CatalogPage(BasePage):
         super(CatalogPage, self).__init__(driver, base_url=base_url)
         self.base_url = f'{base_url}/products.html'
 
+    def check_open_page(self):
+        actual_url = self.driver.current_url
+        assert actual_url == self.base_url
+
     def get_card_title(self):
         return self.find_element(CatalogPageLocators.CARD_TITLE).text
 
