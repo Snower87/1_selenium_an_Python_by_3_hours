@@ -139,3 +139,30 @@ def test_3_chek_following_the_link_catalog(browser, root_url):
     main_page.click_on(MainPageLocators.CATALOG_HEADER)
     sleep(2)
     catalog_page.check_open_page()
+
+# (07.02.2026, #20m)
+def test_4_check_following_the_link_profile(browser, root_url):
+    # 1 Открытие главной страницы и настройка браузера
+    main_page = MainPage(browser)
+    profile_page = ProfilePage(browser)
+
+    main_page.navigate_to()
+    browser.maximize_window()
+
+    # 2 Открываем список в меню (dropDown)
+    main_page.click_on(MainPageLocators.NAVBAR)
+    sleep(2)
+    main_page.click_on(MenuLocators.PROFILE_PAGE)
+    sleep(2)
+
+    # 3 Проверяем переход на страницу Профиля
+    profile_page.check_open_page()
+
+    # 4 Возвращаемся назад
+    browser.back()
+    sleep(2)
+
+    # 5 И проверяем прямой переход на страницу каталога
+    profile_page.navigate_to()
+    sleep(2)
+    profile_page.check_open_page()

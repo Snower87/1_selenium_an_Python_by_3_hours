@@ -4,7 +4,7 @@ class BasePageLocators:
     # Константы — обычно пишутся в верхнем регистре
     LOGIN_PAGE= (By.LINK_TEXT, 'Boйти ')
     NAVBAR = (By.ID, 'navbarDropdown')
-    PROFILE_PAGE= (By.LINK_TEXT, 'Профиль')
+    #PROFILE_PAGE= (By.LINK_TEXT, 'Профиль') # не работает
 
 class MainPageLocators (BasePageLocators):
     START_PURCHASE = (By.ID, 'start-purchase-link')
