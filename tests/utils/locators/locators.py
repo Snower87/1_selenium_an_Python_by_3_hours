@@ -36,3 +36,4 @@ class ProfilePageLocators(BasePageLocators):
     INPUT_LASTNAME = (By.ID, 'inputLastName')
     LOGIN_USER = (By.ID, 'inputUsername')
     EMAIL_USER = (By.ID, 'inputEmailAddress')
+    CREATE_ORDER = (By.XPATH, "//a[contains(@href,'/orders/order-create.html')]")

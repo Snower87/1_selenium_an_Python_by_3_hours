@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 
 from config.settings import BASE_DIR
 from pages.catalog_page import CatalogPage
+from pages.create_order_page import CreateOrderPage
 from pages.profile_page import ProfilePage
 from tests.pages.main_page import MainPage
 from utils.locators.locators import MainPageLocators, BasePageLocators, MenuLocators, ProfilePageLocators
@@ -218,3 +219,24 @@ def test5_check_profile_page(browser, root_url):
     assert text_locator == 'Итого'
     text_locator = profile_page.find_element(ProfilePageLocators.CARD_FOOTER).find_element(By.CLASS_NAME, 'float-right').text
     assert text_locator == '2 390 руб.'
+
+# (08.02.2026, #25m)
+def test6_check_following_the_link_create_order(browser, root_url):
+    # 1 Открываем главную страницу и настраиваем браузер
+    main_page = MainPage(browser)
+    profile_page = ProfilePage(browser)
+    create_order = CreateOrderPage(browser)
+
+    browser.maximize_window()
+    main_page.navigate_to()
+
+    # 2 Проверяем url-страницыПереходим в профиль и нажимаем 'Оформить'
+    main_page.click_on(MainPageLocators.NAVBAR)
+    main_page.click_on(MenuLocators.PROFILE_PAGE)
+    sleep(2)
+    profile_page.click_on(ProfilePageLocators.CREATE_ORDER)
+    sleep(2)
+
+    # 3 Проверяем url-страницы 'Оформление заказа'
+    create_order.check_open_page()
+    sleep(2)
