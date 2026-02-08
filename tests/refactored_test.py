@@ -7,7 +7,7 @@ from config.settings import BASE_DIR
 from pages.catalog_page import CatalogPage
 from pages.profile_page import ProfilePage
 from tests.pages.main_page import MainPage
-from utils.locators.locators import MainPageLocators, BasePageLocators, MenuLocators
+from utils.locators.locators import MainPageLocators, BasePageLocators, MenuLocators, ProfilePageLocators
 
 
 # ---> перенесено в файл conftest.py
@@ -166,3 +166,55 @@ def test_4_check_following_the_link_profile(browser, root_url):
     profile_page.navigate_to()
     sleep(2)
     profile_page.check_open_page()
+
+# (08.02.2026, #1h.45m)
+def test5_check_profile_page(browser, root_url):
+    # 1 Открываем главную страницу и настраиваем браузер
+    main_page = MainPage(browser)
+    profile_page = ProfilePage(browser)
+
+    browser.maximize_window()
+    main_page.navigate_to()
+
+    # 2 Переходим в профиль через выпадающий список
+    main_page.click_on(MainPageLocators.NAVBAR)
+    sleep(2)
+    main_page.click_on(MenuLocators.PROFILE_PAGE)
+    sleep(2)
+
+    # 3 Поиск все элементов на странице Профиле и их сравнение
+    # 3.1 Проверка в текстовых-полях: 'Имя', 'Фамилия', 'Имя пользователя"'
+    text_locator = profile_page.find_element_by_text("Имя").text
+    assert text_locator == "Имя"
+    text_locator = profile_page.find_element_by_text("Фамилия").text
+    assert text_locator == "Фамилия"
+    text_locator = profile_page.find_element_by_text("Имя пользователя").text
+    assert text_locator == "Имя пользователя"
+    #text_locator = profile_page.find_element_by_text("Адрес электронной почты").text
+    #text_locator = profile_page.find_element(By.XPATH, "//label[@for='inputEmailAddress']").text.strip()
+    #assert element.text.strip() == element_text, f"Текст элемента отличается от {element_text}"
+    #assert text_locator == "Адрес электронной почты"
+
+    # 3.2 Проверка в input-полях: 'Имя', 'Фамилия'
+    text_locator = profile_page.find_element(ProfilePageLocators.INPUT_NAME).get_attribute("value")
+    assert text_locator == "Валерий"
+    text_locator = profile_page.find_element(ProfilePageLocators.INPUT_LASTNAME).get_attribute("value")
+    assert text_locator == 'Павликов'
+
+    # 3.3 Проверка в input-полях: 'Имя пользователя', 'Адрес электронной почты'
+    text_locator = profile_page.find_element(ProfilePageLocators.LOGIN_USER).get_attribute("value")
+    assert text_locator == "valeriy"
+    text_locator = profile_page.find_element(ProfilePageLocators.EMAIL_USER).get_attribute("value")
+    assert text_locator == "valerypavlikov@yandex.ru"
+
+    # 3.4 Проверка полей: 'Корзина', 'Product name', 'Product description', 'Итого', 'значение цены'
+    text_locator = profile_page.find_element_by_text("Корзина").text[:len("Корзина")] #сюда попадает 'Корзина\n3' поэтому урезаю
+    assert text_locator == 'Корзина'
+    text_locator = profile_page.find_element_by_text("Product name").text
+    assert text_locator == 'Product name'
+    text_locator = profile_page.find_element_by_text("Product description").text
+    assert text_locator == 'Product description'
+    text_locator = profile_page.find_element(ProfilePageLocators.CARD_FOOTER).find_element(By.CLASS_NAME, 'float-left').text
+    assert text_locator == 'Итого'
+    text_locator = profile_page.find_element(ProfilePageLocators.CARD_FOOTER).find_element(By.CLASS_NAME, 'float-right').text
+    assert text_locator == '2 390 руб.'

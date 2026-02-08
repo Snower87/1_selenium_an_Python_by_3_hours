@@ -1,3 +1,4 @@
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from config.settings import ROOT_URL
@@ -30,3 +31,16 @@ class BasePage:
 
     def wait_until_visibility_of_element_located(self, locator):
         WebDriverWait(self.driver, timeout=5).until(EC.visibility_of_element_located(locator))
+
+    def find_element_by_text(self, element_text, timeout_sec=10):
+        # Вариант 1
+        return WebDriverWait(self.driver, timeout_sec).until(
+            EC.visibility_of_element_located((By.XPATH, f"//*[contains(text(), '{element_text}')]"))
+        )
+        # Вариант 2
+        #normalized_text = element_text.replace("\\n", "").replace(" ", "")
+        #xpath_query = f"//*[normalize-space(text())='{normalized_text}']"
+        #return WebDriverWait(self.driver, timeout_sec).until(
+        #    EC.visibility_of_element_located((By.XPATH, xpath_query))
+        #)
+

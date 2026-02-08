@@ -21,10 +21,18 @@ class MenuLocators (BasePageLocators):
 
 class CatalogPageLocators (BasePageLocators):
     CARD_TITLE =  (By.CLASS_NAME, 'card-title')
+    CARD_DESCRIPTION = (By.CLASS_NAME, 'card-title')
+    COUNT_PRODUCTS_IN_BASKET = (By.NAME, 'basketID')
     CARD_FOOTER = (By.CLASS_NAME, 'card-footer')
+    BUTTON_CREATE_ORDER = (By.XPATH, "//a[contains(@href,'/orders/order-create.html')]")
 
 class ProfilePageLocators(BasePageLocators):
     CARD_TITLE = (By.CLASS_NAME, 'card-title')
+    CARD_FOOTER = (By.CLASS_NAME, 'card-footer')
     TRASH = (By.ID, 'trash')
     TRASH_BY_XPATH = (By.XPATH, '//*[@id="trash"]/i')
     EMPTY_CART = (By.TAG_NAME, 'h3')
+    INPUT_NAME = (By.ID, 'inputFirstName')
+    INPUT_LASTNAME = (By.ID, 'inputLastName')
+    LOGIN_USER = (By.ID, 'inputUsername')
+    EMAIL_USER = (By.ID, 'inputEmailAddress')
