@@ -40,4 +40,8 @@ class ProfilePageLocators(BasePageLocators):
 
 class CreateOrderPageLocators(BasePageLocators):
     CARD_TITLE = (By.XPATH, "//div[@class='py-5 text-center']")
-    BACKET_TITLE = (By.XPATH, "//span[@class='text-primary']")
+    BASKET_TITLE = (By.XPATH, "//span[@class='text-primary']")
+    INPUT_FIRSTNAME = (By.ID, "firstName")
+    INPUT_LASTNAME = (By.ID, "lastName")
+    INPUT_EMAIL = (By.ID, "email")
+    INPUT_ADDRESS_REAL = (By.ID, "address")

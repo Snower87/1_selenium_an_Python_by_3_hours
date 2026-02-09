@@ -272,3 +272,38 @@ def test7_check_following_to_main_page_from_create_order(browser, root_url):
     main_page.find_element(MainPageLocators.TITLE_STORE_HEADER).click()
     sleep(2)
     main_page.check_open_page()
+
+# (09.02.2026, #30m)
+def test8_create_order_for_real_person(browser, root_url):
+    # 1 Открываем главную страницу и настраиваем браузер
+    main_page = MainPage(browser)
+    profile_page = ProfilePage(browser)
+    create_order = CreateOrderPage(browser)
+
+    browser.maximize_window()
+    create_order.navigate_to()
+
+    # 2 Заполняе input-поля: c Именем и ФИО. И проверяем значения после их заполнения
+    create_order.find_element(CreateOrderPageLocators.INPUT_FIRSTNAME).send_keys("Петр")
+    value_input_firstname = create_order.find_element(CreateOrderPageLocators.INPUT_FIRSTNAME).get_attribute("value")
+    assert value_input_firstname == "Петр"
+    sleep(2)
+    create_order.find_element(CreateOrderPageLocators.INPUT_LASTNAME).send_keys("Васильев")
+    value_input_lastname = create_order.find_element(CreateOrderPageLocators.INPUT_LASTNAME).get_attribute("value")
+    assert value_input_lastname == "Васильев"
+    sleep(2)
+
+    # 3 Заполняе input-поля: email, address. И проверяем значения после их заполнения
+    create_order.find_element(CreateOrderPageLocators.INPUT_EMAIL).send_keys("test_email@google.com")
+    value_input_email = create_order.find_element(CreateOrderPageLocators.INPUT_EMAIL).get_attribute("value")
+    assert value_input_email == "test_email@google.com"
+    sleep(2)
+    create_order.find_element(CreateOrderPageLocators.INPUT_ADDRESS_REAL).send_keys("Москва, ул. Малая Ордынская, дом 5")
+    value_input_address = create_order.find_element(CreateOrderPageLocators.INPUT_ADDRESS_REAL).get_attribute("value")
+    assert value_input_address == "Москва, ул. Малая Ордынская, дом 5"
+    sleep(2)
+
+    # 4 Нажимаем кнопку 'Продолжить'
+    button_continue = create_order.find_element_by_text("Продолжить")
+    button_continue.click()
+    sleep(2)
