@@ -307,3 +307,41 @@ def test8_create_order_for_real_person(browser, root_url):
     button_continue = create_order.find_element_by_text("Продолжить")
     button_continue.click()
     sleep(2)
+
+# (09.02.2026, #30m)
+def test9_check_basket_from_create_order_page(browser, root_url):
+    # 1 Открываем главную страницу и настраиваем браузер
+    main_page = MainPage(browser)
+    profile_page = ProfilePage(browser)
+    create_order = CreateOrderPage(browser)
+
+    browser.maximize_window()
+    create_order.navigate_to()
+
+    # 2 Проверяем названия меток в корзине с заказом
+    sleep(2)
+    el_basket = create_order.find_element_by_text("Корзина")
+    assert el_basket.text == 'Корзина'
+    # Проверяем кол-во # Используем соседний span рядом с корзиной
+    el_count = create_order.find_element((By.XPATH, "//span[@class='badge badge-primary badge-pill text-white']")).text
+    assert el_count == "3"
+
+    # 3 Проверяем название товаров и их кол-во
+    expected_data = [
+        {"name": "Product name", "quantity": "2"},
+        {"name": "Second product", "quantity": "1"},
+        {"name": "Third item", "quantity": "3"}
+    ]
+
+    list_products = create_order.find_elements((By.XPATH, "//li[contains(@class,'list-group-item')]"))[:-1]
+
+    # Проверяем название и количество
+    for i, product in enumerate(list_products):
+        # Получаем название продукта
+        #product_name = product.find_element((By.TAG_NAME, "h6")).text.strip()
+        product_name = product.find_element(By.CLASS_NAME, "my-0").text.strip()
+        assert product_name == expected_data[i]["name"]
+        # Получаем количество продукта
+        quantity_product = product.find_element(By.TAG_NAME, "small").text.strip()[0].strip()  # берем число перед словом "шт."
+        assert quantity_product == expected_data[i]["quantity"]
+
