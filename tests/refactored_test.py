@@ -8,7 +8,8 @@ from pages.catalog_page import CatalogPage
 from pages.create_order_page import CreateOrderPage
 from pages.profile_page import ProfilePage
 from tests.pages.main_page import MainPage
-from utils.locators.locators import MainPageLocators, BasePageLocators, MenuLocators, ProfilePageLocators
+from utils.locators.locators import MainPageLocators, BasePageLocators, MenuLocators, ProfilePageLocators, \
+    CreateOrderPageLocators
 
 
 # ---> перенесено в файл conftest.py
@@ -240,3 +241,34 @@ def test6_check_following_the_link_create_order(browser, root_url):
     # 3 Проверяем url-страницы 'Оформление заказа'
     create_order.check_open_page()
     sleep(2)
+
+# (09.02.2026, #30m)
+def test7_check_following_to_main_page_from_create_order(browser, root_url):
+    # 1 Открываем главную страницу и настраиваем браузер
+    main_page = MainPage(browser)
+    profile_page = ProfilePage(browser)
+    create_order = CreateOrderPage(browser)
+
+    browser.maximize_window()
+    create_order.navigate_to()
+
+    # 2 Проверка содержимого страницы
+    create_order_title = create_order.find_element(CreateOrderPageLocators.CARD_TITLE).text
+    assert create_order_title == 'Оформление заказа'
+    backet_title = create_order.find_element(CreateOrderPageLocators.BACKET_TITLE).text
+    assert backet_title == 'Корзина'
+    backet_title2 = create_order.find_element_by_text('Адрес доставки').text
+    assert backet_title2 == 'Адрес доставки'
+    first_name = create_order.find_element_by_text('Имя').text
+    assert first_name == 'Имя'
+    last_name = create_order.find_element_by_text('Фамилия').text
+    assert last_name == 'Фамилия'
+    email = create_order.find_element_by_text('Адрес электронной почты').text
+    assert email == 'Адрес электронной почты'
+    adress = create_order.find_element((By.XPATH, "//label[@for='address']")).text
+    assert adress == 'Адрес'
+
+    # 3 Проверка перехода на главную страницу (main-page)
+    main_page.find_element(MainPageLocators.TITLE_STORE_HEADER).click()
+    sleep(2)
+    main_page.check_open_page()

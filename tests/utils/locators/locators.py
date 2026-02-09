@@ -37,3 +37,7 @@ class ProfilePageLocators(BasePageLocators):
     LOGIN_USER = (By.ID, 'inputUsername')
     EMAIL_USER = (By.ID, 'inputEmailAddress')
     CREATE_ORDER = (By.XPATH, "//a[contains(@href,'/orders/order-create.html')]")
+
+class CreateOrderPageLocators(BasePageLocators):
+    CARD_TITLE = (By.XPATH, "//div[@class='py-5 text-center']")
+    BACKET_TITLE = (By.XPATH, "//span[@class='text-primary']")
