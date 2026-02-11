@@ -46,3 +46,7 @@ class CreateOrderPageLocators(BasePageLocators):
     INPUT_EMAIL = (By.ID, "email")
     INPUT_ADDRESS_REAL = (By.ID, "address")
     LIST_PRODUCT = (By.CLASS_NAME, 'list-group mb-3')
+
+class OrdersPageLocators(BasePageLocators):
+    TABLE_LOCATOR = (By.XPATH, ".//table[@class='table']")
+    TAG_COLUMNS = (By.XPATH, ".//th[@scope='col']")

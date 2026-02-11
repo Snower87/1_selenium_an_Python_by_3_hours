@@ -6,10 +6,11 @@ from selenium.webdriver.common.by import By
 from config.settings import BASE_DIR
 from pages.catalog_page import CatalogPage
 from pages.create_order_page import CreateOrderPage
+from pages.orders_page import OrdersPage
 from pages.profile_page import ProfilePage
 from tests.pages.main_page import MainPage
 from utils.locators.locators import MainPageLocators, BasePageLocators, MenuLocators, ProfilePageLocators, \
-    CreateOrderPageLocators
+    CreateOrderPageLocators, OrdersPageLocators
 
 
 # ---> перенесено в файл conftest.py
@@ -345,3 +346,54 @@ def test9_check_basket_from_create_order_page(browser, root_url):
         quantity_product = product.find_element(By.TAG_NAME, "small").text.strip()[0].strip()  # берем число перед словом "шт."
         assert quantity_product == expected_data[i]["quantity"]
 
+#--- Страница 'Заказы' ---
+# (11.02.2026, #1h)
+def test10_check_orders_page_content(browser, root_url):
+    # 1 Открываем главную страницу и настраиваем браузер
+    main_page = MainPage(browser)
+    orders_page = OrdersPage(browser)
+
+    browser.maximize_window()
+    main_page.navigate_to()
+
+    # 2 Переходим на страницу заказов и проверяем url
+    main_page.click_on(BasePageLocators.NAVBAR)
+    sleep(2)
+    main_page.click_on(MenuLocators.ORDER_PAGE)
+    sleep(2)
+    orders_page.check_open_page()
+
+    # 3 Получаем список с названиями столбцов
+    #list_columns = orders_page.find_element(OrdersPageLocators.CONTAINER_NAME_COLUMN).find_element(OrdersPageLocators.NAME_COLUMNS)
+    #element = orders_page.find_element(OrdersPageLocators.CONTAINER_NAME_COLUMN)
+    table = orders_page.find_element(OrdersPageLocators.TABLE_LOCATOR)
+    name_columns = table.find_elements(By.XPATH, ".//th[@scope='col']")
+    #name_columns = table.find_elements(OrdersPageLocators.TAG_COLUMNS) # НЕ РАБОТАЕТ ПОЧЕМУ-ТО
+
+    # 3.1 Проверяем названия столбцов
+    check_list_column = ["#", "Статус", "Создан", "Итого", "Действие"]
+    for i, sub in enumerate(name_columns):
+        assert sub.text == check_list_column[i]
+
+    # 4 Получаем список со строками
+    rows = table.find_elements(By.XPATH, ".//tr")
+    orders = []
+
+    """
+    # 4.1 Парсим данные из строк
+    for row in rows:
+        cells = row.find_elements(By.TAG_NAME, "td")
+
+        order_number = row.find_element(By.TAG_NAME, "th").text
+        data = {
+            'number': order_number,
+            'status': cells[0].text,
+            'created_at': cells[1].text,
+            'total_amount': float(cells[2].text.replace(' ', '').replace('руб.', '')),
+            'action': {'view_link': cells[3].find_element(By.TAG_NAME, 'a').get_attribute('href')}
+        }
+        orders.append(data)
+
+    # 4.2 Проверяем строки
+    #assert orders.
+    """
