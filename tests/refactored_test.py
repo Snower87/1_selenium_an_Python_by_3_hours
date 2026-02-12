@@ -347,7 +347,7 @@ def test9_check_basket_from_create_order_page(browser, root_url):
         assert quantity_product == expected_data[i]["quantity"]
 
 #--- Страница 'Заказы' ---
-# (11.02.2026, #1h)
+# (11.02.2026, #1.5h)
 def test10_check_orders_page_content(browser, root_url):
     # 1 Открываем главную страницу и настраиваем браузер
     main_page = MainPage(browser)
@@ -378,22 +378,39 @@ def test10_check_orders_page_content(browser, root_url):
     # 4 Получаем список со строками
     rows = table.find_elements(By.XPATH, ".//tr")
     orders = []
+    cells = []
 
-    """
     # 4.1 Парсим данные из строк
     for row in rows:
         cells = row.find_elements(By.TAG_NAME, "td")
-
         order_number = row.find_element(By.TAG_NAME, "th").text
-        data = {
-            'number': order_number,
-            'status': cells[0].text,
-            'created_at': cells[1].text,
-            'total_amount': float(cells[2].text.replace(' ', '').replace('руб.', '')),
-            'action': {'view_link': cells[3].find_element(By.TAG_NAME, 'a').get_attribute('href')}
-        }
-        orders.append(data)
 
-    # 4.2 Проверяем строки
-    #assert orders.
-    """
+        if len(cells) != 0:
+            data = {
+                'number': order_number,
+                'status': cells[0].text,
+                'created_at': cells[1].text,
+                'total_amount': float(cells[2].text.replace(' ', '').replace('руб.', '')),
+                'action': {'view_link': cells[3].find_element(By.TAG_NAME, 'a').get_attribute('href')}
+            }
+            orders.append(data)
+
+    # 4.2 Проверяем строки c заказами
+    assert len(orders) == 3
+    first_order = orders[0] # 1	Оплачен	21 авг. 21 года	5 070 руб.
+    assert first_order['number'] == str(1)
+    assert first_order['status'] == 'Оплачен'
+    assert first_order['created_at'] == '21 авг. 21 года'
+    assert first_order['total_amount'] == 5070.0
+
+    first_order = orders[1] # 2	Досталвен	16 июля 21 года	4 876 руб.
+    assert first_order['number'] == str(2)
+    assert first_order['status'] == 'Досталвен'
+    assert first_order['created_at'] == '16 июля 21 года'
+    assert first_order['total_amount'] == 4876.0
+
+    first_order = orders[2] # 3	В пути	14 нояб. 21 года	9 566 руб.
+    assert first_order['number'] == str(3)
+    assert first_order['status'] == 'В пути'
+    assert first_order['created_at'] == '14 нояб. 21 года'
+    assert first_order['total_amount'] == 9566.0
