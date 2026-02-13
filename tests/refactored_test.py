@@ -3,14 +3,15 @@ from time import sleep
 import pytest
 from selenium.webdriver.common.by import By
 
-from config.settings import BASE_DIR
+from config.settings import BASE_DIR, ROOT_URL
 from pages.catalog_page import CatalogPage
 from pages.create_order_page import CreateOrderPage
+from pages.current_order_page import CurrentOrderPage
 from pages.orders_page import OrdersPage
 from pages.profile_page import ProfilePage
 from tests.pages.main_page import MainPage
 from utils.locators.locators import MainPageLocators, BasePageLocators, MenuLocators, ProfilePageLocators, \
-    CreateOrderPageLocators, OrdersPageLocators
+    CreateOrderPageLocators, OrdersPageLocators, CurrentOrderPageLocators
 
 
 # ---> перенесено в файл conftest.py
@@ -414,3 +415,63 @@ def test10_check_orders_page_content(browser, root_url):
     assert first_order['status'] == 'В пути'
     assert first_order['created_at'] == '14 нояб. 21 года'
     assert first_order['total_amount'] == 9566.0
+
+#--- Страница 'Заказ №12345' ---
+# (13.02.2026, #1.5h)
+def test11_check_current_page_12345_content(browser, root_url):
+    # 1 Открываем главную страницу и настраиваем браузер
+    #current_page = CurrentOrderPage(browser, root_url) ---> в данном варианте открывалось index.html/orders/order.html, потому что бралось значение root_url из conftest.py
+    current_page = CurrentOrderPage(browser, ROOT_URL)  # ---> в данном варианте открывается норм orders/order.html
+
+    browser.maximize_window()
+    current_page.navigate_to()
+
+    # 2 Проверяем url-адрес открытой страницы
+    sleep(2)
+    current_page.check_open_page()
+
+    table = current_page.find_element(CurrentOrderPageLocators.TABLE_CURR_ORDER)
+    name_columns = table.find_elements(By.XPATH, ".//th[@scope='col']")
+    #name_columns = table.find_elements(OrdersPageLocators.TAG_COLUMNS) # НЕ РАБОТАЕТ ПОЧЕМУ-ТО
+
+    # 3 Проверяем контекст/содержимое страницы
+    assert current_page.find_element(CurrentOrderPageLocators.TITLE_ORDER_12345).text == "Заказ №12345"
+
+    # 3.1 Проверяем названия столбцов
+    check_list_column = ["Название", "Кол-во", "Цена", "Сумма"]
+    for i, sub in enumerate(name_columns):
+        assert sub.text == check_list_column[i]
+
+    # 4 Получаем список со строками
+    rows = table.find_elements(By.XPATH, ".//tr")
+    orders = []
+    cells = []
+
+    # 4.1 Парсим данные из строк
+    for row in rows:
+        cells = row.find_elements(By.TAG_NAME, "td")
+        product_name = row.find_element(By.TAG_NAME, "th").text
+
+        if len(cells) != 0:
+            data = {
+                'product_name': product_name,
+                'product_quantity': cells[0].text,
+                'price': cells[1].text,
+                'amount': cells[2].text.replace(' ', '').replace('руб.', '')
+                #'amount': float(cells[2].text.replace(' ', '').replace('руб.', ''))
+            }
+            orders.append(data)
+
+    # 4.2 Проверяем строки c заказами
+    assert len(orders) == 3
+    first_order = orders[0] # Худи черного цвета с монограммами adidas Originals	1	6 090,00 руб.	6 090,00 руб.
+    assert first_order['product_name'] == "Худи черного цвета с монограммами adidas Originals"
+    assert first_order['product_quantity'] == '1'
+    assert first_order['price'] == '6 090,00 руб.'
+    assert first_order['amount'] == '6090,00'
+
+    first_order = orders[2] # Коричневый спортивный oversized-топ ASOS DESIGN	2	3 390,00 руб.	6 780,00 руб.
+    assert first_order['product_name'] == "Коричневый спортивный oversized-топ ASOS DESIGN"
+    assert first_order['product_quantity'] == '2'
+    assert first_order['price'] == '3 390,00 руб.'
+    assert first_order['amount'] == '6780,00'

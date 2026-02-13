@@ -50,3 +50,7 @@ class CreateOrderPageLocators(BasePageLocators):
 class OrdersPageLocators(BasePageLocators):
     TABLE_LOCATOR = (By.XPATH, ".//table[@class='table']")
     TAG_COLUMNS = (By.XPATH, ".//th[@scope='col']")
+
+class CurrentOrderPageLocators(BasePageLocators):
+    TITLE_ORDER_12345 = (By.TAG_NAME, 'h1')
+    TABLE_CURR_ORDER = (By.TAG_NAME, 'table')
